@@ -60,7 +60,7 @@ export default function EditBook() {
                           className="form-control" id="dop"  onChange={(e)=>handleChange({dop: e.target.value})}/>
                     </div>
 
-                    <button className="btn btn-success" onClick={handleSubmit}>Submit</button>
+                    <button className="btn btn-success" onClick={handleSubmit}>Update</button>
                 </form>
             </section>
         </>

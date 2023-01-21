@@ -3,10 +3,22 @@ const Book = require("../model/book")
 
 const getAllBooks = async (req, res, next) => {
     let books;
-
     try {
-        books = await Book.find();
-        res.status(200).send(books)
+
+        let page = req.query.page ? parseInt(req.query.page): 1;
+        let size = req.query.size ? parseInt(req.query.size): 5;
+
+        let skip = (page - 1) * size
+
+        let total = await Book.countDocuments();
+
+        books = await Book.find().skip(skip).limit(size)
+        res.status(200).send({
+            books,
+            total,
+            page,
+            size
+        })
     } catch (error) {
         res.status(404).send({ message: "No Books found" })
     }
@@ -60,8 +72,8 @@ const searchBook = async (req, res, next) => {
     try {
         let result = await Book.find({
             "$or": [
-                { title: { $regex: req.params.key } },
-                { author: { $regex: req.params.key } },
+                { title: { $regex: req.params.key, $options: "i" } },
+                { author: { $regex: req.params.key, $options: "i" } },
             ]
         });
         console.log(result);
