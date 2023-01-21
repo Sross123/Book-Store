@@ -64,33 +64,43 @@ export default function Home() {
         <>
             <main>
                 <input type="text" className="form-control" placeholder="Search Book" style={{ width: "900px", margin: "25px 0" }} onChange={handleSearch} />
-                <table className="table" style={{ width: "900px" }}>
-                    <thead>
-                        <tr className="table-dark">
-                            <th scope="col">Title </th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Date of Publication</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {formData && formData.map((item, index) => {
-                            return <tr className="table-secondary">
-                                <td>{item.title}</td>
-                                <td>{item.author}</td>
-                                <td>{item.dop}</td>
-                                <td colSpan={5}><button className="btn btn-primary btn-sm" style={{ width: "100px" }} onClick={() => handleEdit(item._id)}>Edit</button><button className="btn btn-danger btn-sm" style={{ width: "100px", marginLeft: "5px" }} onClick={() => handleDelete(item._id)}>Delete</button></td>
+                <div style={{width:"100%",height:"350px",display:"flex", alignItem:"center", justifyContent:"center"}}>
+                    <table className="table" style={{ width: "900px" }}>
+                        <thead>
+                            <tr className="table-dark">
+                                <th scope="col">Title </th>
+                                <th scope="col">Author</th>
+                                <th scope="col">Date of Publication</th>
+                                <th scope="col">Action</th>
                             </tr>
-                        })}
+                        </thead>
+                        <tbody>
+                            {formData && formData.map((item, index) => {
+                                return <tr className="table-secondary">
+                                    <td>{item.title}</td>
+                                    <td>{item.author}</td>
+                                    <td>{item.dop}</td>
+                                    <td colSpan={5}><button className="btn btn-primary btn-sm" style={{ width: "100px" }} onClick={() => handleEdit(item._id)}>Edit</button><button className="btn btn-danger btn-sm" style={{ width: "100px", marginLeft: "5px" }} onClick={() => {
+                                        var flag = window.confirm('Are you sure, Want to Delete');
+                                        if (flag == true) {
+                                            handleDelete(item._id)
+                                        }
+                                    }
+                                    }>Delete</button></td>
+                                </tr>
+                            })}
 
-                    </tbody>
-                </table>
-                <ul className="pagination">
+                        </tbody>
+                        <ul className="pagination" style={{marginLeft:"35%"}}>
                     {activePage !== 1 && <li className="page-item" onClick={() => setActivePage(activePage - 1)}><a className="page-link" href="#">Previous</a></li>}
                     {totalPageNo(totalUsers, LIMIT).map((pageNo) => <li className={`page-item ${pageNo === activePage ? 'active' : ''}`} key={pageNo} onClick={() => setActivePage(pageNo)}><a className="page-link" href="#">{pageNo}</a></li>
                     )}
                     {activePage !== Math.ceil(totalUsers / LIMIT) && <li className="page-item" onClick={() => setActivePage(activePage + 1)}><a className="page-link" href="#">Next</a></li>}
                 </ul>
+                    </table>
+                    
+                </div>
+                
             </main>
         </>
     )
